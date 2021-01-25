@@ -5,24 +5,13 @@ import (
 	"time"
 )
 
-
 import (
 	"user-service/app/com/wpbs/pojo"
 )
 
 import (
-	"github.com/apache/dubbo-go/config"
 	gxlog "github.com/dubbogo/gost/log"
-
 )
-
-
-var userService  = new(UserService)
-
-func main() {
-	// 设置提供者接口
-	config.SetProviderService(userService)
-}
 
 // 用户业务逻辑处理对象
 type UserService struct {

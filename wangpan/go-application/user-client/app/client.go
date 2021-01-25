@@ -56,19 +56,30 @@ var (
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
 	hessian.RegisterPOJO(&pojo.User{})
-	provider := new(service.UserProvider)
-	config.SetConsumerService(provider)
+	hessian.RegisterPOJO(&pojo.ServerCheck{})
+	userProvider := new(service.UserProvider)
+	config.SetConsumerService(userProvider)
+	serverCheckProvider := new(service.ServerCheckService)
+	config.SetConsumerService(serverCheckProvider)
 	config.Load()
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pojo.User{}
-   	err := provider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+   	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
 		panic(err)
 	}
 
 	gxlog.CInfo("response result: %v\n", user)
+
+   	serverCheck := &pojo.ServerCheck{}
+	err = serverCheckProvider.Check(context.TODO(), []interface{}{"check"}, serverCheck)
+	if err != nil {
+		panic(err)
+	}
+
+	gxlog.CInfo("response result: %v\n", serverCheck)
 	initSignal()
 }
 

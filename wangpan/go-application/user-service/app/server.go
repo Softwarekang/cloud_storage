@@ -54,8 +54,11 @@ var (
 // 		export APP_LOG_CONs F_FILE="xxx"
 func main() {
 	hessian.RegisterPOJO(&pojo.User{})
+	hessian.RegisterPOJO(&pojo.ServerCheck{})
 	userService := new (service.UserService)
 	config.SetProviderService(userService)
+	serverCheckService := new(service.ServerCheckService)
+	config.SetProviderService(serverCheckService)
 	config.Load()
 
 	initSignal()
