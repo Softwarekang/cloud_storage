@@ -55,25 +55,21 @@ var (
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-	hessian.RegisterPOJO(&pojo.User{})
-	hessian.RegisterPOJO(&pojo.ServerCheck{})
-	userProvider := new(service.UserProvider)
-	config.SetConsumerService(userProvider)
-	serverCheckProvider := new(service.ServerCheckService)
-	config.SetConsumerService(serverCheckProvider)
+
 	config.Load()
 	time.Sleep(3e9)
-
+	userProvider := new(service.UserProvider)
+	serverCheckProvider := new(service.ServerCheckService)
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pojo.User{}
-   	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
 		panic(err)
 	}
 
 	gxlog.CInfo("response result: %v\n", user)
 
-   	serverCheck := &pojo.ServerCheck{}
+	serverCheck := &pojo.ServerCheck{}
 	err = serverCheckProvider.Check(context.TODO(), []interface{}{"check"}, serverCheck)
 	if err != nil {
 		panic(err)
@@ -81,6 +77,18 @@ func main() {
 
 	gxlog.CInfo("response result: %v\n", serverCheck)
 	initSignal()
+}
+
+func registerConsumerService() {
+	userProvider := new(service.UserProvider)
+	config.SetConsumerService(userProvider)
+	serverCheckProvider := new(service.ServerCheckService)
+	config.SetConsumerService(serverCheckProvider)
+}
+
+func registerPOJO() {
+	hessian.RegisterPOJO(&pojo.User{})
+	hessian.RegisterPOJO(&pojo.ServerCheck{})
 }
 
 func initSignal() {

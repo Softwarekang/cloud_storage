@@ -53,17 +53,28 @@ var (
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONs F_FILE="xxx"
 func main() {
-	hessian.RegisterPOJO(&pojo.User{})
-	hessian.RegisterPOJO(&pojo.ServerCheck{})
-	userService := new (service.UserService)
-	config.SetProviderService(userService)
-	serverCheckService := new(service.ServerCheckService)
-	config.SetProviderService(serverCheckService)
+    registerPOJO()
+    registerProviderService()
 	config.Load()
 
 	initSignal()
 }
 
+// 注册提供者
+func registerProviderService() {
+	hessian.RegisterPOJO(&pojo.User{})
+	hessian.RegisterPOJO(&pojo.ServerCheck{})
+}
+
+// 序列化注册
+func registerPOJO() {
+	userService := new(service.UserService)
+	config.SetProviderService(userService)
+	serverCheckService := new(service.ServerCheckService)
+	config.SetProviderService(serverCheckService)
+}
+
+// 监控
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
