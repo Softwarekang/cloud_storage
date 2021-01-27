@@ -2,12 +2,17 @@ package app_config
 
 import (
 	"gopkg.in/ini.v1"
+	"os"
 	"sync"
 )
 
 var (
 	config *configStruct
 	once   sync.Once
+	App    appStruct
+
+	// 环境配置文件
+	ENV_CONFIG_FILE = os.Getenv("ENV_CONFIG_FILE")
 )
 
 // 全部配置 app redis Log DB
@@ -25,11 +30,9 @@ type appStruct struct {
 	JWT_TOKEN string `ini:"jwt_token"`
 }
 
-var App appStruct
-
 // 加载环境配置信息
-func loadConfig() {
-	cfg, err := ini.LooseLoad("D:\\GoFiles\\project-conf\\dev\\.env")
+func LoadConfig() {
+	cfg, err := ini.LooseLoad(ENV_CONFIG_FILE)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +52,7 @@ func loadConfig() {
 // 单列模式获取config
 func GetAppConfig() *configStruct {
 	once.Do(func() {
-		loadConfig()
+		LoadConfig()
 	})
 
 	return config
