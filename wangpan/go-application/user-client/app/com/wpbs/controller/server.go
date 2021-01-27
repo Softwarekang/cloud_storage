@@ -21,9 +21,9 @@ var (
 
 // 服务探测
 func CheckServer(ctx *gin.Context) {
-	log.Info(" checkServer request:#v", ctx.Params)
+	log.Info(" checkServer request:", ctx.Params)
 	serverCheck := &DTO.ServerCheck{}
-	log.Info("serverCheckService req:#v", "test")
+	log.Info("serverCheckService req:", "test")
 	serverCheckService = config.GetConsumerService("ServerCheckService").(*service.ServerCheckService)
 	err := serverCheckService.Check(context.TODO(), []interface{}{"echo test"}, serverCheck)
 	if err != nil {
