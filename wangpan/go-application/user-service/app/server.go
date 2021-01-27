@@ -87,12 +87,12 @@ func initSignal() {
 			// reload()
 		default:
 			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
+				logger.Warnf("app_config exit now by force...")
 				os.Exit(1)
 			})
 
 			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
+			fmt.Println("provider app_config exit now...")
 			return
 		}
 	}

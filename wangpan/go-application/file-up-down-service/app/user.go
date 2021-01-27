@@ -59,5 +59,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (u User) JavaClassName() string {
-	return "com.ikurento.pojo.User"
+	return "com.ikurento.DTO.User"
 }

@@ -1,4 +1,4 @@
-package pojo
+package DTO
 
 // 服务探测
 type ServerCheck struct {
@@ -8,5 +8,5 @@ type ServerCheck struct {
 
 // 实现JavaClassName方法，同步JAVA服务
 func (serverCheck *ServerCheck) JavaClassName() string{
-		return "com.wpbs.pojo.ServerCheck"
+		return "com.wpbs.DTO.ServerCheck"
 }

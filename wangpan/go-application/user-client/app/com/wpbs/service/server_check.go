@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-	"user-client/app/com/wpbs/pojo"
+	"user-client/app/com/wpbs/DTO"
 )
 
 type ServerCheckService struct {
-	Check func(ctx context.Context, req []interface{}, rsp *pojo.ServerCheck) error
+	Check func(ctx context.Context, req []interface{}, rsp *DTO.ServerCheck) error
 }
 
 // 	Reference

@@ -5,7 +5,7 @@
 application:
   organization: "xupt.com"
   name: "UserService"
-  module: "wangpan pojo-info server"
+  module: "wangpan DTO-info server"
   version: "0.0.1"
   owner: "ankangan"
   environment: "dev"

@@ -10,8 +10,8 @@ connect_timeout : "3s"
 # application config
 application:
   organization : "xupt.com"
-  name  : "UserService"
-  module : "wangpan pojo-info client"
+  name  : "UserClient"
+  module : "wangpan DTO-info client"
   version : "0.0.1"
   owner : "ankangan"
   environment : "dev"

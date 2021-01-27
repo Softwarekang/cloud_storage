@@ -5,7 +5,7 @@
 application:
   organization : "ikurento.com"
   name : "BDTService"
-  module : "dubbogo pojo-info server"
+  module : "dubbogo DTO-info server"
   version : "0.0.1"
   owner : "ZX"
   environment : "dev"
@@ -22,7 +22,7 @@ services:
     registry: "demoZk"
     protocol : "dubbo"
     # 相当于dubbo.xml中的interface
-    interface : "com.ikurento.pojo.UserProvider"
+    interface : "com.ikurento.DTO.UserProvider"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"

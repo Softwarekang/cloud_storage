@@ -30,5 +30,5 @@ type User struct {
 
 // 同步JAVA对象
 func (u User) JavaClassName() string {
-	return "com.wpbs.pojo.User"
+	return "com.wpbs.DTO.User"
 }

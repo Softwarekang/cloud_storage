@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package pojo
+package DTO
 
 import (
 	"time"
@@ -31,5 +31,5 @@ type User struct {
 
 
 func (User) JavaClassName() string {
-	return "com.wpbs.pojo.User"
+	return "com.wpbs.DTO.User"
 }
