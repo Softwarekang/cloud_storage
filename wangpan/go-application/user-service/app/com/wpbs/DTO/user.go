@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-package pojo
-
-import (
-	"time"
-)
+package VO
 
 type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
+	Id          int64
+	Name        string
+	PassWord    string
+	PhoneNumber string
+	Email       string
+	CreateTime  int64
+	UpdateTime  int64
 }
 
 // 同步JAVA对象

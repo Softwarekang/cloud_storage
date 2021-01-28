@@ -1,4 +1,4 @@
-package pojo
+package VO
 
 // 服务探测
 type ServerCheck struct {
