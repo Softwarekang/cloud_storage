@@ -3,38 +3,42 @@
 
 check: true
 # client
-request_timeout : "3s"
+request_timeout: "3s"
 # connect timeout
-connect_timeout : "3s"
+connect_timeout: "3s"
 
 # application config
 application:
-  organization : "xupt.com"
-  name  : "UserClient"
-  module : "wangpan DTO-info client"
-  version : "0.0.1"
-  owner : "ankangan"
-  environment : "dev"
+  organization: "xupt.com"
+  name: "UserClient"
+  module: "wangpan DTO-info client"
+  version: "0.0.1"
+  owner: "ankangan"
+  environment: "dev"
 
-registries :
+registries:
   "localZk":
     protocol: "zookeeper"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:2181"
     username: ""
     password: ""
 
 
 references:
-  "UserProvider":
+  "UserService":
     # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
     registry: "localZk"
-    protocol : "dubbo"
-    interface : "com.wpbs.service.UserService"
+    protocol: "dubbo"
+    interface: "com.wpbs.service.UserService"
     cluster: "failover"
-    methods :
-    - name: "GetUser"
-      retries: 3
+    methods:
+      - name: "GetUser"
+        retries: 3
+      - name: "CreateUser"
+        retrire: 3
+      - name: "GetUserById"
+        retrire: 3
 
   "ServerCheckService":
     # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册

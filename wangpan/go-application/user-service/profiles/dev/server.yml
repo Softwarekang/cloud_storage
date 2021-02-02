@@ -34,6 +34,12 @@ services:
       - name: "GetUser"
         retries: 1
         loadbalance: "random"
+      - name: "CreateUser"
+        retries: 1
+        loadbalance: "random"
+      -name: "GetUserById"
+        retries: 1
+        loadbalance: "random"
     # 服务探测配置
   "ServerCheckService":
     registry: "localZK"

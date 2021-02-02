@@ -6,6 +6,7 @@ require (
 	github.com/apache/dubbo-go v1.5.2-0.20200919130513-8a059ddd7bf7
 	github.com/apache/dubbo-go-hessian2 v1.7.0
 	github.com/dubbogo/gost v1.9.2 // indirect
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.5.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.4 // indirect

@@ -19,6 +19,7 @@ package main
 
 import (
 	"time"
+	"user-client/common/cors"
 )
 
 import (
@@ -55,7 +56,6 @@ func main() {
 	// dubbo config load
 	config.Load()
 	time.Sleep(3e9)
-
 	// gin start
 	r := gin.Default()
 	// load router
@@ -64,9 +64,9 @@ func main() {
 }
 
 func registerConsumerService() {
-	userProvider := new(service.UserProvider)
+	userService := new(service.UserService)
 	serverCheckProvider := new(service.ServerCheckService)
-	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userService)
 	config.SetConsumerService(serverCheckProvider)
 }
 

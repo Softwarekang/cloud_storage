@@ -9,6 +9,6 @@ import (
 func TestGetLogger(t *testing.T) {
 	logger1 := GetLogger()
 	logger2 := GetLogger()
-	logger1.Infof("%v test log", 11)
+	logger1.Info("aa")
 	assert.Equal(t, logger1, logger2)
 }

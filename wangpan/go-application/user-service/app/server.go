@@ -23,11 +23,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"user-service/app/com/wpbs/DTO"
 	"user-service/app/com/wpbs/service"
-)
-
-import (
-	"user-service/app/com/wpbs/pojo"
 )
 
 import (
@@ -62,8 +59,8 @@ func main() {
 
 // 注册提供者
 func registerProviderService() {
-	hessian.RegisterPOJO(&pojo.User{})
-	hessian.RegisterPOJO(&pojo.ServerCheck{})
+	hessian.RegisterPOJO(&DTO.User{})
+	hessian.RegisterPOJO(&DTO.ServerCheck{})
 }
 
 // 序列化注册

@@ -17,19 +17,18 @@
 
 package DTO
 
-import (
-	"time"
-)
-
 type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
+	TraceId     string
+	Id          int64
+	Name        string
+	PassWord    string
+	PhoneNumber string
+	Email       string
+	CreateTime  int64
+	UpdateTime  int64
 }
 
-
-
-func (User) JavaClassName() string {
+// 同步JAVA对象
+func (u User) JavaClassName() string {
 	return "com.wpbs.DTO.User"
 }

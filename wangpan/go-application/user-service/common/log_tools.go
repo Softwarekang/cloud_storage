@@ -9,7 +9,7 @@ import (
 	"path"
 	"sync"
 	"time"
-	"user-client/common/app_config"
+	"user-service/common/app_config"
 )
 
 var (
@@ -31,7 +31,7 @@ func GetLogger() *logrus.Logger {
 func loggerToFile() {
 	logFilePath := config.Log.LogPath
 	logFileSuffix := config.Log.FileSuffix
-	appName := config.App.AppName
+	appName := "UserService"
 	fileName := appName + logFileSuffix
 	// 日志文件
 	filepath := path.Join(logFilePath, fileName)

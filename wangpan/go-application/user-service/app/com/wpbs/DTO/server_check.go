@@ -1,4 +1,4 @@
-package VO
+package DTO
 
 // 服务探测
 type ServerCheck struct {
