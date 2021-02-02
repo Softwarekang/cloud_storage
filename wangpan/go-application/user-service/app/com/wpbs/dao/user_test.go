@@ -14,14 +14,14 @@ var (
 
 /// test getUserByID
 func TestUserDao_GetUserById(t *testing.T) {
-	user, _ := userDao.GetUserById(1)
+	user, _ := userDao.GetUserById("1")
 	assert.Equal(t, user.Id, int64(1))
 }
 
 // test createUser
 func TestUserDao_CreateUser(t *testing.T) {
 	user := &DTO.User{
-		Name:        "张蕊芝",
+		Name:        "安康",
 		PhoneNumber: "13759972100",
 		PassWord:    "13759972100",
 		Email:       "jingyechenfu@aliyun.com",
@@ -33,4 +33,11 @@ func TestUserDao_CreateUser(t *testing.T) {
 	fmt.Println(insertedID)
 	err := e
 	assert.Equal(t, err, nil)
+}
+
+// test getUserByName
+func TestUserDao_GetUserByName(t *testing.T) {
+	user, err := userDao.GetUserByName("安康")
+	fmt.Println(user)
+	assert.Equal(t, err,nil)
 }

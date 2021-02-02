@@ -24,7 +24,7 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 	userModel := changeUserVP(user)
 	_, err := DB.Insert(userModel)
 	if err != nil {
-		log.Errorf("sql exec error info :", err)
+		log.Errorf("sql exec error info :%v", err)
 		return 0, err
 	}
 
@@ -38,12 +38,26 @@ func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 	user := &PO.User{}
 	_, err := DB.Where("id = ?", id).Get(user)
 	if err != nil {
-		log.Errorf(" sql exec error info:", err)
+		log.Errorf(" sql exec error info:%v", err)
 		return nil, err
 	}
 
 	log.Infof(" UserDao GetUserById success")
 
+	return changeUserPV(user), nil
+}
+
+// 通过用户名查询用户
+func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
+	log.Info("userDao GetUserByName")
+	user := &PO.User{}
+	_, err := DB.Where("name = ?", name).Get(user)
+	if err != nil {
+		log.Errorf(" sql exec error info:%v", err)
+		return nil, err
+	}
+
+	log.Info("userDao GetUserByName success")
 	return changeUserPV(user), nil
 }
 
