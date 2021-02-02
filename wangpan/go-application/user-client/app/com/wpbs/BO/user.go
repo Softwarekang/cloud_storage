@@ -9,11 +9,5 @@ type User struct {
 	Email       string `json:"email"`
 	CreateTime  int64  `json:"createTime"`
 	UpdateTime  int64  `json:"updateTime"`
-	TraceId     string `json:"traceId"`
 }
 
-// getUserById
-type GetUserById struct {
-	Id      int64  `json:"id" `
-	TraceId string `json:"traceId"`
-}

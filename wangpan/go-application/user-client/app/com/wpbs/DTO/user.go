@@ -18,7 +18,6 @@
 package DTO
 
 type User struct {
-	TraceId     string
 	Id          int64
 	Name        string
 	PassWord    string

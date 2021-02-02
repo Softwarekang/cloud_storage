@@ -19,7 +19,6 @@ package main
 
 import (
 	"time"
-	"user-client/common/cors"
 )
 
 import (

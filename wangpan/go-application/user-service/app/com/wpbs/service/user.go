@@ -23,7 +23,7 @@ type UserService struct {
 // 模拟获取用户
 func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	log.Info("GetUser req:", req)
-	rsp := DTO.User{"456", 1, "Alex Stocks", "rz@ak10.16", "13759972100", "jingyechenfu@aliyun.com",
+	rsp := DTO.User{1, "Alex Stocks", "rz@ak10.16", "13759972100", "jingyechenfu@aliyun.com",
 		time.Now().Unix(), time.Now().Unix()}
 	log.Info("rsp:", rsp)
 	return &rsp, nil
@@ -32,29 +32,29 @@ func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User
 // 注册用户
 func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	user := req[0].(*DTO.User)
-	log.Infof("traceId:%v UserService createUser req:", user.TraceId, user)
+	log.Infof("UserService createUser req:", user)
 	insertedID, err := userDao.CreateUser(user)
 	if err != nil {
-		log.Errorf("traceId:%v UserService CreateUser error info :%v", user.TraceId, err)
+		log.Errorf(" UserService CreateUser error info :%v", err)
 		return nil, err
 	}
 
 	user.Id = insertedID
-	log.Infof("traceId:%v UserService createUser success", user.TraceId)
+	log.Infof(" UserService createUser success")
 	return user, nil
 }
 
 // 获取用户
 func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.User, error) {
-	traceId, userId := req[0].(string), req[1].(int64)
-	log.Infof("traceId:%v UserService GetUserById", traceId)
-	user, err := userDao.GetUserById(userId, traceId)
+	userId := req[0].(string)
+	log.Infof(" UserService GetUserById")
+	user, err := userDao.GetUserById(userId)
 	if err != nil {
-		log.Errorf("traceId:%v UserService GetUserById error info:%v ", err)
+		log.Errorf("UserService GetUserById error info:%v ", err)
 		return nil, err
 	}
 
-	log.Info("traceId:%v UserService GetUserById success", traceId)
+	log.Info(" UserService GetUserById success")
 
 	return user, nil
 }

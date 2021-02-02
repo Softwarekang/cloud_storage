@@ -18,31 +18,31 @@ type UserDao struct {
 
 // 注册用户
 func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
-	log.Infof("traceId:%v UserDao CreateUser ", user.TraceId)
+	log.Infof("UserDao CreateUser ")
 	user.CreateTime = time.Now().Unix()
 	user.UpdateTime = time.Now().Unix()
 	userModel := changeUserVP(user)
 	_, err := DB.Insert(userModel)
 	if err != nil {
-		log.Errorf("traceId:%v sql exec error info :", user.TraceId, err)
+		log.Errorf("sql exec error info :", err)
 		return 0, err
 	}
 
-	log.Infof("traceId:%v UserDao CreateUser success", user.TraceId)
+	log.Infof(" UserDao CreateUser success")
 	return userModel.Id, nil
 }
 
 // 获取用户
-func (u *UserDao) GetUserById(id int64, traceId string) (*DTO.User, error) {
-	log.Infof("traceId:%v UserDao GetUserById ", traceId)
+func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
+	log.Infof(" UserDao GetUserById ")
 	user := &PO.User{}
 	_, err := DB.Where("id = ?", id).Get(user)
 	if err != nil {
-		log.Errorf("traceId:%v sql exec error info:", traceId, err)
+		log.Errorf(" sql exec error info:", err)
 		return nil, err
 	}
 
-	log.Infof("traceId:%v UserDao GetUserById success", traceId)
+	log.Infof(" UserDao GetUserById success")
 
 	return changeUserPV(user), nil
 }
