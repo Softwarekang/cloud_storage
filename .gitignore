@@ -1,2 +1,6 @@
 .idea
-wangpan/.ide
+wangpan/.idea
+wangpan/go-application/file-up-down-client/go.sum
+wangpan/go-application/file-up-down-service/go.sum
+wangpan/go-application/user-client/go.sum
+wangpan/go-application/user-service/go.sum

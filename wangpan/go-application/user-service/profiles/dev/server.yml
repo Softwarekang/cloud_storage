@@ -37,7 +37,10 @@ services:
       - name: "CreateUser"
         retries: 1
         loadbalance: "random"
-      -name: "GetUserById"
+      - name: "GetUserById"
+        retries: 1
+        loadbalance: "random"
+      - name: "GetUserByName"
         retries: 1
         loadbalance: "random"
     # 服务探测配置

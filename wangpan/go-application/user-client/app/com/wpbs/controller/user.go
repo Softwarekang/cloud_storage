@@ -10,12 +10,9 @@ import (
 	"user-client/common"
 )
 
-var (
-	userService *service.UserService
-)
-
 // 用户注册
 func CreateUser(ctx *gin.Context) {
+	log.Info("  controller createUser ")
 	user := &BO.User{}
 	var err error
 	err = ctx.ShouldBind(user)
@@ -25,13 +22,34 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	log.Info("  controller createUser ")
-	userService = config.GetConsumerService("UserService").(*service.UserService)
+	userService := config.GetConsumerService("UserService").(*service.UserService)
+	// 查询用户是否存在
+	selectUser := &DTO.User{}
+	err = userService.GetUserByName(context.TODO(), user.Name, selectUser)
+	if err != nil {
+		log.Errorf("user controller GetUserByName error", err)
+		Error(ctx, common.CODE_500)
+		return
+	}
+
+	isNil, err := common.IsNilString(selectUser.Name)
+	if err != nil {
+		log.Error(err)
+		Error(ctx, common.CODE_500)
+		return
+	}
+
+	// 存在重复用户名
+	if !isNil {
+		Error(ctx, common.CODE_406)
+		return
+	}
+
 	userDTO := userBD(user)
 	err = userService.CreateUser(context.TODO(), []interface{}{userDTO}, userDTO)
 	if err != nil {
 		log.Errorf("user controller createUser error", err)
-		Error(ctx, common.CODE_500)
+		Error(ctx, common.CODE_406)
 		return
 	}
 
@@ -43,7 +61,7 @@ func CreateUser(ctx *gin.Context) {
 func GetUserById(ctx *gin.Context) {
 	log.Infof("controller GetUserById")
 	userId := ctx.Query("id")
-	userService = config.GetConsumerService("UserService").(*service.UserService)
+	userService := config.GetConsumerService("UserService").(*service.UserService)
 	userDTO := &DTO.User{}
 	err := userService.GetUserById(context.TODO(), []interface{}{userId}, userDTO)
 	if err != nil {
@@ -54,6 +72,41 @@ func GetUserById(ctx *gin.Context) {
 
 	Success(ctx, "获取成功", gin.H{"info": userDTO})
 	log.Infof("controller getUserById ")
+}
+
+// 用户登录
+func Login(ctx *gin.Context) {
+	log.Info("userController login")
+	user := &BO.User{}
+	var err error
+	err = ctx.ShouldBind(user)
+	if err != nil {
+		log.Errorf("param bind error: #v", err)
+		Error(ctx, common.CODE_405)
+		return
+	}
+
+	userService := config.GetConsumerService("UserService").(*service.UserService)
+	selectUser := &DTO.User{}
+	err = userService.GetUserByName(context.TODO(), user.Name, selectUser)
+	if err != nil {
+		log.Errorf("user controller GetUserByName error", err)
+		Error(ctx, common.CODE_500)
+		return
+	}
+
+	isNil, err := common.IsNilString(selectUser.Name)
+	if err != nil {
+		log.Error(err)
+		Error(ctx, common.CODE_500)
+		return
+	}
+
+	// 用户不存在
+	if isNil {
+		Error(ctx, common.CODE_407)
+		return
+	}
 }
 
 // DTO <-> BO

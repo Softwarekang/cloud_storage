@@ -37,7 +37,7 @@ func TestUserDao_CreateUser(t *testing.T) {
 
 // test getUserByName
 func TestUserDao_GetUserByName(t *testing.T) {
-	user, err := userDao.GetUserByName("安康")
+	user, err := userDao.GetUserByName("安康1")
 	fmt.Println(user)
 	assert.Equal(t, err,nil)
 }

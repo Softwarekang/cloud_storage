@@ -59,6 +59,19 @@ func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.
 	return user, nil
 }
 
+func (u *UserService) GetUserByName(ctx context.Context, req interface{}) (*DTO.User, error) {
+	log.Info("UserService GetUserByName")
+	name := req.(string)
+	user, err := userDao.GetUserByName(name)
+	if err != nil {
+		log.Errorf("UserService GetUserByName error info:%v ", err)
+		return nil, err
+	}
+
+	log.Info("UserService GetUserByName success")
+	return user, nil
+}
+
 // 继承RPCSerive 接
 // 口  实现Reference方法:
 func (u *UserService) Reference() string {
