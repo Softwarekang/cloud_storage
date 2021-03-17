@@ -1,7 +1,5 @@
 package app_config
 
-var DB dbStruct
-
 //日志配置结构
 type dbStruct struct {
 	Engine          string `ini:"engine"`

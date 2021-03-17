@@ -9,8 +9,6 @@ import (
 var (
 	config *configStruct
 	once   sync.Once
-	App    appStruct
-
 	// 环境配置文件
 	ENV_CONFIG_FILE = os.Getenv("ENV_CONFIG_FILE")
 )
@@ -21,6 +19,7 @@ type configStruct struct {
 	Redis redisStruct `ini:"redis"`
 	Log   logStruct   `ini:"log"`
 	DB    dbStruct    `ini:"database"`
+	Minio MinioConfig `ini:"minio"`
 }
 
 //应用配置
@@ -42,11 +41,6 @@ func LoadConfig() {
 	if err != nil {
 		panic(err)
 	}
-
-	App = config.App
-	Redis = config.Redis
-	Log = config.Log
-	DB = config.DB
 }
 
 // 单列模式获取config

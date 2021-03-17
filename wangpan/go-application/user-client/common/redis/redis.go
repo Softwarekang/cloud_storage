@@ -3,11 +3,11 @@ package redis
 import (
 	"github.com/garyburd/redigo/redis"
 	"sync"
-	"user-client/common"
+	log2 "user-client/common/log"
 )
 
 var (
-	log  = common.GetLogger()
+	log  = log2.GetLogger()
 	coon redis.Conn
 	once sync.Once
 )

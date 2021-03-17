@@ -1,16 +1,16 @@
 package PO
 
 // orm file struct
-type file struct {
-	Id          int8
+type File struct {
+	Id          int64
 	FileName    string `xorm:"varchar(30) notnull unique 'file_name'"`
 	FileViewUrl string `xorm:"varchar(255) notnull  'file_view_url'"`
 	FileType    string `xorm:"varchar(20) notnull 'file_type'"`
-	FileSize    int8   `xorm:"'file_size'"`
+	FileSize    int64  `xorm:"'file_size'"`
 	UserId      int64  `xorm:"notnull 'user_id'"`
 	UserName    string `xorm:"varchar(10) notnull 'user_name'"`
 	CreateTime  int64  `xorm:"not null 'create_time'"`
-	UpdateTime  int64  `xorm:"not null 'create_time'"`
+	UpdateTime  int64  `xorm:"not null 'update_time'"`
 }
 
 /*

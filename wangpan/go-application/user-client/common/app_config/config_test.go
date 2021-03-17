@@ -11,6 +11,7 @@ func TestConfigLoad(t *testing.T) {
     // assert logPath
 	assert.Equal(t, config.Log.LogPath, "D:/all-log/dubbo-go/dubbo-go")
 	assert.Equal(t, config.App.AppName, "UserClient")
+	assert.Equal(t, config.Minio.SSL, false)
 }
 
 // 单列测试

@@ -1,4 +1,4 @@
-package common
+package httpcode
 
 type ResponseCode int
 

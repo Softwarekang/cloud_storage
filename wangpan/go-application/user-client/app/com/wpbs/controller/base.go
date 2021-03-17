@@ -2,10 +2,7 @@ package controller
 
 import (
 	"net/http"
-)
-
-import (
-	constant "user-client/common"
+	"user-client/common/httpcode"
 )
 
 import (
@@ -13,7 +10,7 @@ import (
 )
 
 type response struct {
-	Code    constant.ResponseCode `json:"code"`
+	Code    httpcode.ResponseCode `json:"code"`
 	Message string                `json:"message"`
 	Data    interface{}           `json:"data"`
 }
@@ -21,24 +18,24 @@ type response struct {
 func Success(ctx *gin.Context, message string, data map[string]interface{}) {
 
 	response := response{
-		Code:    constant.SUCCESS,
+		Code:    httpcode.SUCCESS,
 		Message: message,
 		Data:    data,
 	}
 	setResponse(ctx, http.StatusOK, response)
 }
 
-func Error(ctx *gin.Context, code constant.ResponseCode) {
+func Error(ctx *gin.Context, code httpcode.ResponseCode) {
 
 	response := response{
 		Code:    code,
-		Message: constant.GetCodeText(code),
+		Message: httpcode.GetCodeText(code),
 		Data:    gin.H{},
 	}
 	setResponse(ctx, http.StatusOK, response)
 }
 
-func ErrorWithMessage(ctx *gin.Context, code constant.ResponseCode, message string) {
+func ErrorWithMessage(ctx *gin.Context, code httpcode.ResponseCode, message string) {
 
 	response := response{
 		Code:    code,
@@ -56,8 +53,8 @@ func setResponse(ctx *gin.Context, statusCode int, resp response) {
 //NOTFOUND method not found action
 func NOTFOUND(ctx *gin.Context) {
 	response := response{
-		Code:    constant.CODE_404,
-		Message: constant.GetCodeText(constant.CODE_404),
+		Code:    httpcode.CODE_404,
+		Message: httpcode.GetCodeText(httpcode.CODE_404),
 		Data:    gin.H{},
 	}
 	ctx.Set("response", response)
@@ -67,8 +64,8 @@ func NOTFOUND(ctx *gin.Context) {
 //StatusInternalServerError server 500 error
 func StatusInternalServerError(ctx *gin.Context) {
 	response := response{
-		Code:    constant.CODE_500,
-		Message: constant.GetCodeText(constant.CODE_500),
+		Code:    httpcode.CODE_500,
+		Message: httpcode.GetCodeText(httpcode.CODE_500),
 		Data:    gin.H{},
 	}
 	ctx.Set("response", response)

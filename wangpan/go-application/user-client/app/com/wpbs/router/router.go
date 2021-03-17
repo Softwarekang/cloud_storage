@@ -2,8 +2,8 @@ package router
 
 import (
 	"user-client/app/com/wpbs/controller"
-	"user-client/common"
 	"user-client/common/cors"
+	log2 "user-client/common/log"
 )
 
 import (
@@ -12,7 +12,7 @@ import (
 
 var (
 	// 日志
-	log = common.GetLogger()
+	log = log2.GetLogger()
 )
 
 // 加载router
@@ -32,4 +32,7 @@ func LoadRouters(router *gin.Engine) {
 	// get user
 	router.GET("/user", controller.GetUserById)
 	log.Info("router load success")
+
+	// 文件操作
+	router.POST("/file", controller.FileUpload)
 }

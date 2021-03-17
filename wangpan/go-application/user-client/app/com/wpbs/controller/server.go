@@ -5,7 +5,8 @@ import (
 	"github.com/apache/dubbo-go/config"
 	"user-client/app/com/wpbs/DTO"
 	"user-client/app/com/wpbs/service"
-	"user-client/common"
+	"user-client/common/httpcode"
+	"user-client/common/log"
 )
 
 import (
@@ -14,25 +15,25 @@ import (
 
 var (
 	// 日志
-	log = common.GetLogger()
+	logger = log.GetLogger()
 	// ServerCheckService
 	serverCheckService *service.ServerCheckService
 )
 
 // 服务探测
 func CheckServer(ctx *gin.Context) {
-	log.Info(" checkServer request:", ctx.Params)
+	logger.Info(" checkServer request:", ctx.Params)
 	serverCheck := &DTO.ServerCheck{}
-	log.Info("serverCheckService req:", "test")
+	logger.Info("serverCheckService req:", "test")
 	serverCheckService = config.GetConsumerService("ServerCheckService").(*service.ServerCheckService)
 	err := serverCheckService.Check(context.TODO(), []interface{}{"echo test"}, serverCheck)
 	if err != nil {
-		log.Errorf("serverCheckService rsp error :#v", err)
-		Error(ctx, common.CODE_500)
+		logger.Errorf("serverCheckService rsp error :#v", err)
+		Error(ctx, httpcode.CODE_500)
 		return
 	}
 
-	log.Info("serverCheckService rsp :#v", serverCheck)
+	logger.Info("serverCheckService rsp :#v", serverCheck)
 	if serverCheck.Code == 200 {
 		Success(ctx, "server success", gin.H{"info": serverCheck})
 	}
