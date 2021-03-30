@@ -1,6 +1,6 @@
 package httpcode
 
-type ResponseCode int
+type ResponseCode int32
 
 const (
 	SUCCESS  ResponseCode = 0   //成功

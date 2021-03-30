@@ -52,7 +52,7 @@ var (
 func main() {
 	registerPOJO()
 	registerProviderService()
-	config.Load()
+ 	config.Load()
 
 	initSignal()
 }
@@ -74,6 +74,7 @@ func registerPOJO() {
 	hessian.RegisterPOJO(&DTO.MonoFile{})
 	hessian.RegisterPOJO(&DTO.GetFileList{})
 	hessian.RegisterPOJO(&DTO.FileList{})
+	hessian.RegisterPOJO(&DTO.DeleteFile{})
 }
 
 // 监控

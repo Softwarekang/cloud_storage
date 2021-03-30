@@ -14,6 +14,13 @@ var (
 )
 
 type UserDao struct {
+	DB interface{}
+}
+
+func NewUserDao(DB interface{}) *UserDao {
+	userDao := new(UserDao)
+	userDao.DB = DB
+	return userDao
 }
 
 // 注册用户

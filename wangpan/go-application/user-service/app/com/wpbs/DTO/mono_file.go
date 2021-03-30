@@ -37,3 +37,12 @@ type FileList struct {
 func (c *FileList) JavaClassName() string {
 	return "com.wpbs.DTO.FileList"
 }
+
+type DeleteFile struct {
+	FileIds []int64
+	UserId  string
+}
+
+func (c *DeleteFile) JavaClassName() string{
+	return "com.wpbs.DTO.DeleteFile"
+}

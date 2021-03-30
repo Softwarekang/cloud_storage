@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"fmt"
 	"gotest.tools/assert"
 	"testing"
@@ -21,7 +22,7 @@ func TestUserDao_GetUserById(t *testing.T) {
 // test createUser
 func TestUserDao_CreateUser(t *testing.T) {
 	user := &DTO.User{
-		Name:        "安康",
+		Name:        "安康1",
 		PhoneNumber: "13759972100",
 		PassWord:    "13759972100",
 		Email:       "jingyechenfu@aliyun.com",
@@ -37,7 +38,9 @@ func TestUserDao_CreateUser(t *testing.T) {
 
 // test getUserByName
 func TestUserDao_GetUserByName(t *testing.T) {
+	var err error
+	err = errors.New("test")
 	user, err := userDao.GetUserByName("安康1")
 	fmt.Println(user)
-	assert.Equal(t, err,nil)
+	assert.Equal(t, err, nil)
 }

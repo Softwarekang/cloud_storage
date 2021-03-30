@@ -114,6 +114,7 @@ func UploadFileMinio(multiFile *multipart.FileHeader) (string, error) {
 // 删除文件
 func DeleteFiles(ctx *gin.Context) {
 	array := ctx.QueryArray("ids")
+	userId := ctx.Query("userId")
 	var ids []int64
 	if err := utils.StringArrayToInt64Array(array, &ids); err != nil {
 		logger.Errorf("DeleteFiles binding param error:%v", err)
@@ -122,7 +123,7 @@ func DeleteFiles(ctx *gin.Context) {
 	}
 
 	fileService := config.GetConsumerService("FileService").(*service.FileService)
-	if err := fileService.DeleteFileByIDs(context.TODO(), ids); err != nil {
+	if err := fileService.DeleteFileByIDs(context.TODO(), &DTO.DeleteFile{FileIds: ids, UserId: userId}); err != nil {
 		logger.Errorf("rpc call fileService methods DeleteFileByIDs:%v", err)
 		Error(ctx, httpcode.CODE_500)
 		return

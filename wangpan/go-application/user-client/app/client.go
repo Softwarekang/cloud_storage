@@ -77,4 +77,5 @@ func registerPOJO() {
 	hessian.RegisterPOJO(&DTO.MonoFile{})
 	hessian.RegisterPOJO(&DTO.FileList{})
 	hessian.RegisterPOJO(&DTO.GetFileList{})
+	hessian.RegisterPOJO(&DTO.DeleteFile{})
 }

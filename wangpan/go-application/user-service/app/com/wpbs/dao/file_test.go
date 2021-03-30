@@ -33,13 +33,13 @@ func TestFileDao_CreateFile(t *testing.T) {
 }
 
 func TestFileDao_GetFileListByUserID(t *testing.T) {
-	monoFiles, err := fileDao.GetFileListByUserID(160, 1, 2)
+	monoFiles, err := fileDao.GetFileListByUserID(160, "", 1, 8)
 	assert.Nil(t, err)
 	assert.Equal(t, 2, len(monoFiles))
 }
 
 func TestFileDao_GetTotalCountByUserId(t *testing.T) {
-	count, err := fileDao.GetTotalCountByUserId(160)
+	count, err := fileDao.GetTotalCountByUserId(160, "")
 	assert.Nil(t, err)
 	assert.Equal(t, 3, count)
 }

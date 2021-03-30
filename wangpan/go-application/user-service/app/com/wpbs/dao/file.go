@@ -7,8 +7,14 @@ import (
 
 // file orm obj
 type FileDao struct {
+	DB interface{}
 }
 
+func NewFileDao(DB interface{}) *FileDao {
+	fileDao := new(FileDao)
+	fileDao.DB = DB
+	return fileDao
+}
 // 插入文件
 func (fileDao *FileDao) CreateFile(monoFile *DTO.MonoFile) error {
 	fileModel := ChangeMonoFileVP(monoFile)

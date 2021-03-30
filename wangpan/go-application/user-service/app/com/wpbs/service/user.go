@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 	"user-service/app/com/wpbs/dao"
+	"user-service/app/com/wpbs/store"
 	"user-service/common"
 )
 
@@ -33,7 +34,8 @@ func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User
 func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	user := req[0].(*DTO.User)
 	log.Infof("UserService createUser req:%v", user)
-	insertedID, err := userDao.CreateUser(user)
+	engine := store.DBClient.Begin()
+	insertedID, err := store.DBClient.User(engine).CreateUser(user)
 	if err != nil {
 		log.Errorf(" UserService CreateUser error info :%v", err)
 		return nil, err
@@ -48,7 +50,8 @@ func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.U
 func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	userId := req[0].(string)
 	log.Infof(" UserService GetUserById")
-	user, err := userDao.GetUserById(userId)
+	engine := store.DBClient.Begin()
+	user, err := store.DBClient.User(engine).GetUserById(userId)
 	if err != nil {
 		log.Errorf("UserService GetUserById error info:%v ", err)
 		return nil, err
@@ -62,7 +65,8 @@ func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.
 func (u *UserService) GetUserByName(ctx context.Context, req interface{}) (*DTO.User, error) {
 	log.Info("UserService GetUserByName")
 	name := req.(string)
-	user, err := userDao.GetUserByName(name)
+	engine := store.DBClient.Begin()
+	user, err := store.DBClient.User(engine).GetUserByName(name)
 	if err != nil {
 		log.Errorf("UserService GetUserByName error info:%v ", err)
 		return nil, err
