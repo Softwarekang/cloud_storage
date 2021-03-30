@@ -59,17 +59,22 @@ func main() {
 	r := gin.Default()
 	// load router
 	router.LoadRouters(r)
-	r.Run()
+	r.Run(":9001")
 }
 
 func registerConsumerService() {
 	userService := new(service.UserService)
 	serverCheckProvider := new(service.ServerCheckService)
+	fileService := new(service.FileService)
 	config.SetConsumerService(userService)
 	config.SetConsumerService(serverCheckProvider)
+	config.SetConsumerService(fileService)
 }
 
 func registerPOJO() {
 	hessian.RegisterPOJO(&DTO.User{})
 	hessian.RegisterPOJO(&DTO.ServerCheck{})
+	hessian.RegisterPOJO(&DTO.MonoFile{})
+	hessian.RegisterPOJO(&DTO.FileList{})
+	hessian.RegisterPOJO(&DTO.GetFileList{})
 }

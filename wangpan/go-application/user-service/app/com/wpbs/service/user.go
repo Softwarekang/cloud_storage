@@ -32,7 +32,7 @@ func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User
 // 注册用户
 func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	user := req[0].(*DTO.User)
-	log.Infof("UserService createUser req:", user)
+	log.Infof("UserService createUser req:%v", user)
 	insertedID, err := userDao.CreateUser(user)
 	if err != nil {
 		log.Errorf(" UserService CreateUser error info :%v", err)

@@ -69,6 +69,15 @@ func (c *Client) CreateBucket(bucketName string) error {
 	return nil
 }
 
+// 检测桶是否存在
+func (c *Client) ExistsBucket(bucketName string) (bool, error) {
+	check(c)
+	bucketExists, err := c.minioClient.BucketExists(bucketName)
+	return bucketExists, err
+}
+
+// 构建viewUrl
+
 // 创建文件
 func (c *Client) UploadFile(bucketName, objectName, suffix string, file io.Reader, size int64) error {
 	check(c)
@@ -98,7 +107,6 @@ func (c *Client) GetUploadOptions(suffix string) string {
 	typeMap["xml"] = "text/xml"
 	typeMap["json"] = "application/json"
 	typeMap["pdf"] = "application/pdf"
-	typeMap["default"] = "application/octet-stream"
 	// 图片类型
 	typeMap["gif"] = "image/gif"
 	typeMap["jpeg"] = "image/jpeg"

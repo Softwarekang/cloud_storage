@@ -31,3 +31,25 @@ func TestFileDao_CreateFile(t *testing.T) {
 	err := fileDao.CreateFile(insertMonoFileMock)
 	assert.Nil(t, err)
 }
+
+func TestFileDao_GetFileListByUserID(t *testing.T) {
+	monoFiles, err := fileDao.GetFileListByUserID(160, 1, 2)
+	assert.Nil(t, err)
+	assert.Equal(t, 2, len(monoFiles))
+}
+
+func TestFileDao_GetTotalCountByUserId(t *testing.T) {
+	count, err := fileDao.GetTotalCountByUserId(160)
+	assert.Nil(t, err)
+	assert.Equal(t, 3, count)
+}
+
+func TestFileDao_DeleteFilesByIds(t *testing.T) {
+	id := make([]int64, 0, 2)
+	id = append(id, 1)
+	id = append(id, 160)
+	id = append(id, 4)
+	id = append(id, 5)
+	err := fileDao.DeleteFilesByIds(id)
+	assert.Nil(t, err)
+}

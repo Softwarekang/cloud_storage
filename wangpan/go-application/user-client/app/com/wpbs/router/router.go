@@ -35,4 +35,6 @@ func LoadRouters(router *gin.Engine) {
 
 	// 文件操作
 	router.POST("/file", controller.FileUpload)
+	router.POST("/getFile", controller.GetFileList)
+	router.DELETE("/file", controller.DeleteFiles)
 }

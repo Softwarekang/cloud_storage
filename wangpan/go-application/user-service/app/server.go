@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"os"
 	"os/signal"
 	"syscall"
@@ -28,7 +29,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
@@ -50,8 +50,8 @@ var (
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONs F_FILE="xxx"
 func main() {
-    registerPOJO()
-    registerProviderService()
+	registerPOJO()
+	registerProviderService()
 	config.Load()
 
 	initSignal()
@@ -59,16 +59,21 @@ func main() {
 
 // 注册提供者
 func registerProviderService() {
-	hessian.RegisterPOJO(&DTO.User{})
-	hessian.RegisterPOJO(&DTO.ServerCheck{})
-}
-
-// 序列化注册
-func registerPOJO() {
 	userService := new(service.UserService)
 	config.SetProviderService(userService)
 	serverCheckService := new(service.ServerCheckService)
 	config.SetProviderService(serverCheckService)
+	fileService := new(service.FileService)
+	config.SetProviderService(fileService)
+}
+
+// 序列化注册
+func registerPOJO() {
+	hessian.RegisterPOJO(&DTO.User{})
+	hessian.RegisterPOJO(&DTO.ServerCheck{})
+	hessian.RegisterPOJO(&DTO.MonoFile{})
+	hessian.RegisterPOJO(&DTO.GetFileList{})
+	hessian.RegisterPOJO(&DTO.FileList{})
 }
 
 // 监控

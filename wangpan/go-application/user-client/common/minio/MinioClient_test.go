@@ -15,7 +15,6 @@ func init() {
 }
 
 func TestClient_NewMinIoClient(t *testing.T) {
-	client := new(Client)
 	err := client.NewMinIoClient()
 	assert.Nil(t, err)
 }
@@ -25,12 +24,16 @@ func TestClient_UploadFile(t *testing.T) {
 	file, _ := os.Open("./user.jpg")
 	defer file.Close()
 	stat, _ := file.Stat()
-	err := client.UploadFile("show", "UploadFile.jpg", "jpg", file, stat.Size())
+	err := client.UploadFile("show1", "UploadFile.jpg", "jpg", file, stat.Size())
 	assert.Nil(t, err)
 }
 
 func TestClient_GetUploadOptions(t *testing.T) {
-	client := new(Client)
 	assert.Equal(t, client.GetUploadOptions("png"), "image/png")
 	assert.Equal(t, client.GetUploadOptions("mp4"), "application/octet-stream")
+}
+
+func TestClient_CreateBucket(t *testing.T) {
+	err := client.CreateBucket("show1")
+	assert.Nil(t, err)
 }

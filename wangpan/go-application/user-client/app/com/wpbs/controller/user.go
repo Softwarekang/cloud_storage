@@ -14,10 +14,8 @@ import (
 // 用户注册
 func CreateUser(ctx *gin.Context) {
 	logger.Info("  controller createUser ")
-	user := &BO.User{}
-	var err error
-	err = ctx.ShouldBind(user)
-	if err != nil {
+	var user BO.User
+	if err := ctx.ShouldBindJSON(&user); err != nil {
 		logger.Errorf("param bind error: #v", err)
 		Error(ctx, httpcode.CODE_405)
 		return
@@ -26,8 +24,7 @@ func CreateUser(ctx *gin.Context) {
 	userService := config.GetConsumerService("UserService").(*service.UserService)
 	// 查询用户是否存在
 	selectUser := &DTO.User{}
-	err = userService.GetUserByName(context.TODO(), user.Name, selectUser)
-	if err != nil {
+	if err := userService.GetUserByName(context.TODO(), user.Name, selectUser); err != nil {
 		logger.Errorf("user controller GetUserByName error", err)
 		Error(ctx, httpcode.CODE_500)
 		return
@@ -46,7 +43,7 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	userDTO := userBD(user)
+	userDTO := userBD(&user)
 	err = userService.CreateUser(context.TODO(), []interface{}{userDTO}, userDTO)
 	if err != nil {
 		logger.Errorf("user controller createUser error", err)
