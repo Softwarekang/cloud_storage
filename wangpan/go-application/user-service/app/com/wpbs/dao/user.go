@@ -45,16 +45,16 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 
 // 获取用户
 func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
-	log.Infof(" UserDao GetUserById ")
+	log.Infof(" UserDao GetUserById id:%v ", id)
 	user := &PO.User{}
 	client := extension.GetSQLClient(u.SQLClient)
 	_, err := client.Where(u.DB, "id = ?", id).Get(user)
 	if err != nil {
-		log.Errorf(" sql exec error info:%v", err)
+		log.Errorf(" sql exec error info:%v, id:%v", err, id)
 		return nil, err
 	}
 
-	log.Infof(" UserDao GetUserById success")
+	log.Infof(" UserDao GetUserById success model:%v", *user)
 
 	return changeUserPV(user), nil
 }

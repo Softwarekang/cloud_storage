@@ -56,23 +56,21 @@ func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.U
 		return nil, err
 	}
 
-	log.Infof(" UserService createUser success")
+	log.Infof(" UserService createUser success rsp:%v", *user)
 	return user, nil
 }
 
 // 获取用户
 func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	userId := req[0].(string)
-	log.Infof(" UserService GetUserById")
+	log.Infof(" UserService GetUserById req:%v", userId)
 	engine := store.DBClient.Begin()
 	user, err := store.DBClient.User(engine).GetUserById(userId)
 	if err != nil {
-		log.Errorf("UserService GetUserById error info:%v ", err)
 		return nil, err
 	}
 
-	log.Info(" UserService GetUserById success")
-
+	log.Info(" UserService GetUserById success rsp:%v", user)
 	return user, nil
 }
 
