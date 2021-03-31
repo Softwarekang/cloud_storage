@@ -40,7 +40,7 @@ func (f *FileService) GetFileListByUserId(ctx context.Context, req interface{}) 
 	if err != nil {
 		return nil, err
 	}
-	defer store.DBClient.EndTx(session, err)
+	defer store.DBClient.EndTx(session, &err)
 	monoFiles, err := store.DBClient.File(session).GetFileListByUserID(getFileListReq.UserId, getFileListReq.FileType, getFileListReq.Page, getFileListReq.PageSize)
 	if err != nil {
 		log.Errorf("GetFileListByUserID error:%v", err)
@@ -61,7 +61,7 @@ func (f *FileService) DeleteFileByIDs(ctx context.Context, req interface{}) erro
 	engine := store.DBClient.Begin()
 	deleteFile := req.(*DTO.DeleteFile)
 	if err := store.DBClient.File(engine).DeleteFilesByIds(deleteFile.FileIds); err != nil {
-		log.Errorf("DeleteFilesByIds error:", err)
+		log.Errorf("DeleteFilesByIds error:%v", err)
 		return err
 	}
 	return nil

@@ -14,32 +14,32 @@ var (
 
 type UserDao struct {
 	DB        interface{}
-	SqlClient string
+	SQLClient string
 }
 
 func NewUserDao(DB interface{}, arg ...string) *UserDao {
 	userDao := &UserDao{}
 	userDao.DB = DB
-	if arg != nil{
-		userDao.SqlClient = arg[0]
+	if arg != nil {
+		userDao.SQLClient = arg[0]
 	}
 	return userDao
 }
 
 // 注册用户
 func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
-	log.Infof("UserDao CreateUser ")
+	log.Infof("UserDao CreateUser model:%v", *user)
 	user.CreateTime = time.Now().Unix()
 	user.UpdateTime = time.Now().Unix()
 	userModel := changeUserVP(user)
-	client := extension.GetSQLClient(u.SqlClient)
+	client := extension.GetSQLClient(u.SQLClient)
 	_, err := client.Insert(u.DB, userModel)
 	if err != nil {
-		log.Errorf("sql exec error info :%v", err)
+		log.Errorf("sql exec error info :%v,model:%v", err, *userModel)
 		return 0, err
 	}
 
-	log.Infof(" UserDao CreateUser success")
+	log.Infof(" UserDao CreateUser success, ,model:%v", *userModel)
 	return userModel.Id, nil
 }
 
@@ -47,7 +47,7 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 	log.Infof(" UserDao GetUserById ")
 	user := &PO.User{}
-	client := extension.GetSQLClient(u.SqlClient)
+	client := extension.GetSQLClient(u.SQLClient)
 	_, err := client.Where(u.DB, "id = ?", id).Get(user)
 	if err != nil {
 		log.Errorf(" sql exec error info:%v", err)
@@ -62,7 +62,7 @@ func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 // 通过用户名查询用户
 func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
 	log.Info("userDao GetUserByName")
-	client := extension.GetSQLClient(u.SqlClient)
+	client := extension.GetSQLClient(u.SQLClient)
 	user := &PO.User{}
 	_, err := client.Where(u.DB, "name = ?", name).Get(user)
 	if err != nil {

@@ -32,8 +32,9 @@ func (d *DefaultFactory) BeginTx() (*xorm.Session, error) {
 	return session, nil
 }
 
-func (d *DefaultFactory) EndTx(session *xorm.Session, err error) {
-	if err != nil {
+func (d *DefaultFactory) EndTx(session *xorm.Session, err *error) {
+
+	if *err != nil {
 		session.Rollback()
 		return
 	}

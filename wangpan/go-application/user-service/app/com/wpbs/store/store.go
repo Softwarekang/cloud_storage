@@ -15,7 +15,7 @@ type Store interface {
 	// 开启事务
 	BeginTx() (*xorm.Session, error)
 	// 关闭事务
-	EndTx(session *xorm.Session, err error)
+	EndTx(session *xorm.Session, err *error)
 
 	// 返回非事务
 	Begin() (engine *xorm.Engine)

@@ -4,8 +4,11 @@ import (
 	"context"
 	"time"
 	"user-service/app/com/wpbs/dao"
+	"user-service/app/com/wpbs/dao/helper"
 	"user-service/app/com/wpbs/store"
+	"user-service/common/constant"
 	log2 "user-service/common/log"
+	"user-service/common/utils"
 )
 
 import (
@@ -34,14 +37,25 @@ func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User
 func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	user := req[0].(*DTO.User)
 	log.Infof("UserService createUser req:%v", user)
-	engine := store.DBClient.Begin()
-	insertedID, err := store.DBClient.User(engine).CreateUser(user)
+	session, err := store.DBClient.BeginTx()
+	defer store.DBClient.EndTx(session, &err)
+
+	userId, err := store.DBClient.User(session).CreateUser(user)
 	if err != nil {
-		log.Errorf(" UserService CreateUser error info :%v", err)
 		return nil, err
 	}
 
-	user.Id = insertedID
+	user.Id = userId
+	createMemory := &helper.CreateMemoryHelper{
+		UserName:       user.Name,
+		UserId:         user.Id,
+		MemoryCapacity: utils.MbToByte(constant.DEFAULT_CAPACITY),
+	}
+	err = store.DBClient.Memory(session).CreateMemory(createMemory)
+	if err != nil {
+		return nil, err
+	}
+
 	log.Infof(" UserService createUser success")
 	return user, nil
 }
