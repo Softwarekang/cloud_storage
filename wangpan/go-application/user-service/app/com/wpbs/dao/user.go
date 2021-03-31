@@ -4,22 +4,25 @@ import (
 	"time"
 	"user-service/app/com/wpbs/DTO"
 	"user-service/app/com/wpbs/PO"
-	"user-service/app/com/wpbs/config/database"
-	"user-service/common"
+	"user-service/common/extension"
+	log2 "user-service/common/log"
 )
 
 var (
-	log = common.GetLogger()
-	DB  = database.GetDB()
+	log = log2.GetLogger()
 )
 
 type UserDao struct {
-	DB interface{}
+	DB        interface{}
+	SqlClient string
 }
 
-func NewUserDao(DB interface{}) *UserDao {
-	userDao := new(UserDao)
+func NewUserDao(DB interface{}, arg ...string) *UserDao {
+	userDao := &UserDao{}
 	userDao.DB = DB
+	if arg != nil{
+		userDao.SqlClient = arg[0]
+	}
 	return userDao
 }
 
@@ -29,7 +32,8 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 	user.CreateTime = time.Now().Unix()
 	user.UpdateTime = time.Now().Unix()
 	userModel := changeUserVP(user)
-	_, err := DB.Insert(userModel)
+	client := extension.GetSQLClient(u.SqlClient)
+	_, err := client.Insert(u.DB, userModel)
 	if err != nil {
 		log.Errorf("sql exec error info :%v", err)
 		return 0, err
@@ -43,7 +47,8 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 	log.Infof(" UserDao GetUserById ")
 	user := &PO.User{}
-	_, err := DB.Where("id = ?", id).Get(user)
+	client := extension.GetSQLClient(u.SqlClient)
+	_, err := client.Where(u.DB, "id = ?", id).Get(user)
 	if err != nil {
 		log.Errorf(" sql exec error info:%v", err)
 		return nil, err
@@ -57,8 +62,9 @@ func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 // 通过用户名查询用户
 func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
 	log.Info("userDao GetUserByName")
+	client := extension.GetSQLClient(u.SqlClient)
 	user := &PO.User{}
-	_, err := DB.Where("name = ?", name).Get(user)
+	_, err := client.Where(u.DB, "name = ?", name).Get(user)
 	if err != nil {
 		log.Errorf(" sql exec error info:%v", err)
 		return nil, err

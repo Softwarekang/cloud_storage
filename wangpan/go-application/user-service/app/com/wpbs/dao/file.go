@@ -3,22 +3,29 @@ package dao
 import (
 	"user-service/app/com/wpbs/DTO"
 	"user-service/app/com/wpbs/PO"
+	"user-service/common/extension"
 )
 
 // file orm obj
 type FileDao struct {
-	DB interface{}
+	DB        interface{}
+	SqlClient string
 }
 
-func NewFileDao(DB interface{}) *FileDao {
-	fileDao := new(FileDao)
+func NewFileDao(DB interface{}, arg ...string) *FileDao {
+	fileDao := &FileDao{}
+	if arg != nil{
+		fileDao.SqlClient = arg[0]
+	}
 	fileDao.DB = DB
 	return fileDao
 }
+
 // 插入文件
 func (fileDao *FileDao) CreateFile(monoFile *DTO.MonoFile) error {
 	fileModel := ChangeMonoFileVP(monoFile)
-	if _, err := DB.Insert(fileModel); err != nil {
+	client := extension.GetSQLClient(fileDao.SqlClient)
+	if _, err := client.Insert(fileDao.DB, fileModel); err != nil {
 		log.Error("monofile insert error msg:", err)
 		return err
 	}
@@ -33,7 +40,8 @@ func (fileDao *FileDao) GetFileListByUserID(userId int64, fileType string, page,
 	sql = WithSQLParam(sql, "file_type", fileType)
 	var monoFileList []*PO.File
 	offset := (page - 1) * pageSize
-	if err := DB.SQL(sql).Limit(pageSize, offset).Find(&monoFileList); err != nil {
+	client := extension.GetSQLClient(fileDao.SqlClient)
+	if err := client.SQL(fileDao.DB, sql).Limit(pageSize, offset).Find(&monoFileList); err != nil {
 		log.Errorf("file dao GetFileListByUserID sql :%v error:%v", sql, err)
 		return nil, err
 	}
@@ -50,8 +58,9 @@ func (fileDao *FileDao) GetFileListByUserID(userId int64, fileType string, page,
 func (fileDao *FileDao) GetTotalCountByUserId(userId int64, fileType string) (int, error) {
 	sql := WithSQLParam("select count(id) from file", "user_id", userId)
 	sql = WithSQLParam(sql, "file_type", fileType)
+	client := extension.GetSQLClient(fileDao.SqlClient)
 	var totalCount int
-	_, err := DB.SQL(sql).Get(&totalCount)
+	_, err := client.SQL(fileDao.DB, sql).Get(&totalCount)
 	if err != nil {
 		log.Errorf("GetTotalCountByUserId  error:%v", err)
 		return 0, nil
@@ -63,7 +72,8 @@ func (fileDao *FileDao) GetTotalCountByUserId(userId int64, fileType string) (in
 // 删除file
 func (fileDao *FileDao) DeleteFilesByIds(ids []int64) error {
 	sql := "delete from file where id in " + IDToStr(ids)
-	_, err := DB.SQL(sql).Execute()
+	client := extension.GetSQLClient(fileDao.SqlClient)
+	_, err := client.SQL(fileDao.DB, sql).Execute()
 	if err != nil {
 		log.Errorf("DeleteFilesByIds error:%v", err)
 		return err

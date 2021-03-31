@@ -20,7 +20,9 @@ type Store interface {
 	// 返回非事务
 	Begin() (engine *xorm.Engine)
 	// 获取userDao
-	User(DB interface{}) *dao.UserDao
+	User(DB interface{}, arg ...string) *dao.UserDao
 	// 获取fileDao
-	File(DB interface{}) *dao.FileDao
+	File(DB interface{}, arg ...string) *dao.FileDao
+	// 获取 memorydao
+	Memory(Db interface{}, arg ...string) *dao.MemoryDao
 }

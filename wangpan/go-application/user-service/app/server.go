@@ -25,6 +25,7 @@ import (
 	"syscall"
 	"time"
 	"user-service/app/com/wpbs/DTO"
+	_ "user-service/app/com/wpbs/SQL/xorm"
 	"user-service/app/com/wpbs/service"
 )
 
@@ -52,7 +53,7 @@ var (
 func main() {
 	registerPOJO()
 	registerProviderService()
- 	config.Load()
+	config.Load()
 
 	initSignal()
 }

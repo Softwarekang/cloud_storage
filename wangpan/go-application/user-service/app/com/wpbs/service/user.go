@@ -5,7 +5,7 @@ import (
 	"time"
 	"user-service/app/com/wpbs/dao"
 	"user-service/app/com/wpbs/store"
-	"user-service/common"
+	log2 "user-service/common/log"
 )
 
 import (
@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	log     = common.GetLogger()
+	log     = log2.GetLogger()
 	userDao = new(dao.UserDao)
 )
 

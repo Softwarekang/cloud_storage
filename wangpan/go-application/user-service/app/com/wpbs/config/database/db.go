@@ -3,8 +3,8 @@ package database
 import (
 	"sync"
 	"time"
-	"user-service/common"
 	"user-service/common/app_config"
+	log2 "user-service/common/log"
 )
 import (
 	_ "github.com/go-sql-driver/mysql"
@@ -15,7 +15,7 @@ var (
 	engine    *xorm.Engine
 	once      sync.Once
 	appConfig = app_config.GetAppConfig()
-	log       = common.GetLogger()
+	log       = log2.GetLogger()
 )
 
 // 获取DB

@@ -4,11 +4,11 @@ import (
 	"github.com/xormplus/xorm"
 	"user-service/app/com/wpbs/config/database"
 	"user-service/app/com/wpbs/dao"
-	"user-service/common"
+	log2 "user-service/common/log"
 )
 
 var (
-	log = common.GetLogger()
+	log = log2.GetLogger()
 )
 
 type DefaultFactory struct {
@@ -44,10 +44,14 @@ func (d *DefaultFactory) Begin() (engine *xorm.Engine) {
 	return d.DB
 }
 
-func (d *DefaultFactory) User(DB interface{}) *dao.UserDao {
-	return dao.NewUserDao(DB)
+func (d *DefaultFactory) User(DB interface{}, arg ...string) *dao.UserDao {
+	return dao.NewUserDao(DB, arg...)
 }
 
-func (d *DefaultFactory) File(DB interface{}) *dao.FileDao {
-	return dao.NewFileDao(DB)
+func (d *DefaultFactory) File(DB interface{}, arg ...string) *dao.FileDao {
+	return dao.NewFileDao(DB, arg...)
+}
+
+func (d *DefaultFactory) Memory(DB interface{}, arg ...string) *dao.MemoryDao {
+	return dao.NewMemoryDao(DB, arg...)
 }
