@@ -75,16 +75,15 @@ func (u *UserService) GetUserById(ctx context.Context, req []interface{}) (*DTO.
 }
 
 func (u *UserService) GetUserByName(ctx context.Context, req interface{}) (*DTO.User, error) {
-	log.Info("UserService GetUserByName")
+	log.Info("UserService GetUserByName req:%v", req)
 	name := req.(string)
 	engine := store.DBClient.Begin()
 	user, err := store.DBClient.User(engine).GetUserByName(name)
 	if err != nil {
-		log.Errorf("UserService GetUserByName error info:%v ", err)
 		return nil, err
 	}
 
-	log.Info("UserService GetUserByName success")
+	log.Info("UserService GetUserByName success rsp:%v", user)
 	return user, nil
 }
 

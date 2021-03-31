@@ -39,7 +39,7 @@ func (u *UserDao) CreateUser(user *DTO.User) (int64, error) {
 		return 0, err
 	}
 
-	log.Infof(" UserDao CreateUser success, ,model:%v", *userModel)
+	log.Infof(" UserDao CreateUser success, , model:%v", *userModel)
 	return userModel.Id, nil
 }
 
@@ -54,23 +54,23 @@ func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 		return nil, err
 	}
 
-	log.Infof(" UserDao GetUserById success model:%v", *user)
+	log.Infof(" UserDao GetUserById success rsp model:%v", *user)
 
 	return changeUserPV(user), nil
 }
 
 // 通过用户名查询用户
 func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
-	log.Info("userDao GetUserByName")
+	log.Info("userDao GetUserByName name:%v", name)
 	client := extension.GetSQLClient(u.SQLClient)
 	user := &PO.User{}
 	_, err := client.Where(u.DB, "name = ?", name).Get(user)
 	if err != nil {
-		log.Errorf(" sql exec error info:%v", err)
+		log.Errorf(" sql exec error info:%v, name:%v", err, name)
 		return nil, err
 	}
 
-	log.Info("userDao GetUserByName success")
+	log.Info("userDao GetUserByName success rsp model:%v", *user)
 	return changeUserPV(user), nil
 }
 
