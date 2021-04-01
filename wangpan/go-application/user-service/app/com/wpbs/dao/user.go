@@ -54,7 +54,7 @@ func (u *UserDao) GetUserById(id string) (*DTO.User, error) {
 		return nil, err
 	}
 
-	log.Infof(" UserDao GetUserById success rsp model:%v", *user)
+	log.Infof(" UserDao GetUserById success rsp model:%v", user)
 
 	return changeUserPV(user), nil
 }
@@ -70,7 +70,7 @@ func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
 		return nil, err
 	}
 
-	log.Info("userDao GetUserByName success rsp model:%v", *user)
+	log.Info("userDao GetUserByName success rsp model:%v", user)
 	return changeUserPV(user), nil
 }
 

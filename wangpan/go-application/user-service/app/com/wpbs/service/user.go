@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 	"user-service/app/com/wpbs/dao"
-	"user-service/app/com/wpbs/dao/helper"
 	"user-service/app/com/wpbs/store"
 	"user-service/common/constant"
 	log2 "user-service/common/log"
@@ -46,7 +45,7 @@ func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.U
 	}
 
 	user.Id = userId
-	createMemory := &helper.CreateMemoryHelper{
+	createMemory := &DTO.Memory{
 		UserName:       user.Name,
 		UserId:         user.Id,
 		MemoryCapacity: utils.MbToByte(constant.DEFAULT_CAPACITY),
@@ -56,7 +55,7 @@ func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.U
 		return nil, err
 	}
 
-	log.Infof(" UserService createUser success rsp:%v", *user)
+	log.Infof(" UserService createUser success rsp:", user)
 	return user, nil
 }
 

@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"time"
 	"user-service/app/com/wpbs/DTO"
 	"user-service/app/com/wpbs/PO"
 	"user-service/common/extension"
@@ -14,7 +15,7 @@ type FileDao struct {
 
 func NewFileDao(DB interface{}, arg ...string) *FileDao {
 	fileDao := &FileDao{}
-	if arg != nil{
+	if arg != nil {
 		fileDao.SQLClient = arg[0]
 	}
 	fileDao.DB = DB
@@ -23,14 +24,17 @@ func NewFileDao(DB interface{}, arg ...string) *FileDao {
 
 // 插入文件
 func (fileDao *FileDao) CreateFile(monoFile *DTO.MonoFile) error {
+	log.Infof("FileDao CreateFile param:%v", *monoFile)
+	monoFile.CreateTime = time.Now().Unix()
+	monoFile.UpdateTime = time.Now().Unix()
 	fileModel := ChangeMonoFileVP(monoFile)
 	client := extension.GetSQLClient(fileDao.SQLClient)
 	if _, err := client.Insert(fileDao.DB, fileModel); err != nil {
-		log.Error("monofile insert error msg:", err)
+		log.Error("FileDao CreateFile error:%v, model:%v", err, *fileModel)
 		return err
 	}
 
-	log.Info("monoFile insert success msg:", fileModel)
+	log.Info("FileDao CreateFile success rsp model:%v", *fileModel)
 	return nil
 }
 
