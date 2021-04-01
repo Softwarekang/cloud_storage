@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	gxlog "github.com/dubbogo/gost/log"
+	"strconv"
 	"user-service/app/com/wpbs/DTO"
 	"user-service/app/com/wpbs/store"
 )
@@ -63,13 +63,44 @@ func (f *FileService) GetFileListByUserId(ctx context.Context, req interface{}) 
 
 // delete files by ids
 func (f *FileService) DeleteFileByIDs(ctx context.Context, req interface{}) error {
-	gxlog.CInfo("FileService DeleteFileByIDs req:%v", req)
-	engine := store.DBClient.Begin()
+	log.Infof("FileService DeleteFileByIDs req:%v", req)
 	deleteFile := req.(*DTO.DeleteFile)
-	if err := store.DBClient.File(engine).DeleteFilesByIds(deleteFile.FileIds); err != nil {
+	session, err := store.DBClient.BeginTx()
+	defer store.DBClient.EndTx(session, &err)
+
+	fileList, err := store.DBClient.File(session).GetFileListByIds(deleteFile.FileIds)
+	if err != nil {
 		return err
 	}
+
+	err = store.DBClient.File(session).DeleteFilesByIds(deleteFile.FileIds)
+	if err != nil {
+		return err
+	}
+
+	totalFileSize := getTotalFileSize(fileList)
+	userId, _ := strconv.ParseInt(deleteFile.UserId, 10, 64)
+	memory, err := store.DBClient.Memory(session).GetMemoryByUserId(userId)
+	if err != nil {
+		return err
+	}
+
+	err = store.DBClient.Memory(session).UpdateMemory(userId, memory.ConsumeMemory-totalFileSize)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("FileService DeleteFileByIDs success")
 	return nil
+}
+
+func getTotalFileSize(fileList []*DTO.MonoFile) int64 {
+	var total int64
+	for _, v := range fileList {
+		total += v.FileSize
+	}
+
+	return total
 }
 
 // reference

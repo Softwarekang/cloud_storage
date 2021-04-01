@@ -85,6 +85,25 @@ func (fileDao *FileDao) DeleteFilesByIds(ids []int64) error {
 
 	return nil
 }
+
+func (fileDao *FileDao) GetFileListByIds(id []int64) ([]*DTO.MonoFile, error) {
+	log.Infof("FileDao GetFileListByIds param:Ids:%v", id)
+	sql := "select * from file where id in " + IDToStr(id)
+	client := extension.GetSQLClient(fileDao.SQLClient)
+	var monoFileList []*PO.File
+	if err := client.SQL(fileDao.DB, sql).Find(&monoFileList); err != nil {
+		log.Errorf("FileDao GetFileListByIds error:%v, sql:%v", err, sql)
+		return nil, err
+	}
+
+	resFileList := make([]*DTO.MonoFile, 0, len(monoFileList))
+	for _, file := range monoFileList {
+		resFileList = append(resFileList, ChangeMonoFilePV(file))
+	}
+	log.Infof("FileDao GetFileListByIds  success rsp model:%v", resFileList)
+	return resFileList, nil
+}
+
 func ChangeMonoFileVP(monoFile *DTO.MonoFile) *PO.File {
 	return &PO.File{
 		Id:          monoFile.Id,
