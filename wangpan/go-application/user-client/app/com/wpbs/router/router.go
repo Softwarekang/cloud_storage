@@ -27,7 +27,8 @@ func LoadRouters(router *gin.Engine) {
 	router.GET("/test", controller.CheckServer)
 	// create user
 	router.POST("/user", controller.CreateUser)
-
+	// 登录
+	router.POST("/login", controller.Login)
 	/*登录验证逻辑*/
 	// get user
 	router.GET("/user", controller.GetUserById)
@@ -37,4 +38,7 @@ func LoadRouters(router *gin.Engine) {
 	router.POST("/file", controller.FileUpload)
 	router.POST("/getFile", controller.GetFileList)
 	router.DELETE("/file", controller.DeleteFiles)
+
+	// 内存操作
+	router.GET("/memory", controller.GetMemory)
 }

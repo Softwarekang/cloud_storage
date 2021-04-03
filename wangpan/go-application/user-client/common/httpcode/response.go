@@ -11,6 +11,7 @@ const (
 	CODE_405 ResponseCode = 405 // 参数错误
 	CODE_406 ResponseCode = 406 // 用户名重复
 	CODE_407 ResponseCode = 407 // 用户不存在
+	CODE_408 ResponseCode = 408 // 密码错误
 
 	USER_LOGIN_FAILED    ResponseCode = 1001 //登录失败
 	USER_NOT_EXISTS      ResponseCode = 1002 //用户不存在
@@ -31,6 +32,7 @@ var codeTextMap = map[ResponseCode]string{
 	USER_JWT_PARSE_FAILD: "登录失败",
 	CODE_406:             "用户名重复",
 	CODE_407:             "用户不存在",
+	CODE_408:             "密码错误",
 }
 
 func GetCodeText(code ResponseCode) string {

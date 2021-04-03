@@ -21,10 +21,10 @@ func TestClient_NewMinIoClient(t *testing.T) {
 
 func TestClient_UploadFile(t *testing.T) {
 	client.NewMinIoClient()
-	file, _ := os.Open("./user.jpg")
+	file, _ := os.Open("./张蕊芝是个猪猪.jpg")
 	defer file.Close()
 	stat, _ := file.Stat()
-	err := client.UploadFile("show1", "UploadFile.jpg", "jpg", file, stat.Size())
+	err := client.UploadFile("show1", "张猪猪.jpg", "jpg", file, stat.Size())
 	assert.Nil(t, err)
 }
 

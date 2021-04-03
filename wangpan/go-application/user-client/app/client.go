@@ -66,9 +66,12 @@ func registerConsumerService() {
 	userService := new(service.UserService)
 	serverCheckProvider := new(service.ServerCheckService)
 	fileService := new(service.FileService)
+	memoryService := new(service.MemoryService)
 	config.SetConsumerService(userService)
 	config.SetConsumerService(serverCheckProvider)
 	config.SetConsumerService(fileService)
+	config.SetConsumerService(memoryService)
+
 }
 
 func registerPOJO() {

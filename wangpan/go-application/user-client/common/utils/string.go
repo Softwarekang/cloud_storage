@@ -1,22 +1,17 @@
 package utils
 
 import (
-	"reflect"
 	"strconv"
 	"user-client/common/errors"
 )
 
 // 检测是否为空
-func IsNilString(str interface{}) (bool, error) {
-	if reflect.TypeOf(str).Kind() != reflect.String {
-		return false, new(errors.Errors).New("interface type must be string")
+func IsNilString(str string) bool {
+	if str == "" {
+		return true
 	}
 
-	if str == nil || str == "" {
-		return true, nil
-	}
-
-	return false, nil
+	return false
 }
 
 // string[] -> int64[]
@@ -33,4 +28,3 @@ func StringArrayToInt64Array(ids []string, rsp *[]int64) error {
 
 	return nil
 }
-

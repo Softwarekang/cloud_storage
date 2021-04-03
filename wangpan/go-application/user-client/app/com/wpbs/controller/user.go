@@ -25,34 +25,27 @@ func CreateUser(ctx *gin.Context) {
 	// 查询用户是否存在
 	selectUser := &DTO.User{}
 	if err := userService.GetUserByName(context.TODO(), user.Name, selectUser); err != nil {
-		logger.Errorf("user controller GetUserByName error", err)
-		Error(ctx, httpcode.CODE_500)
-		return
-	}
-
-	isNil, err := utils.IsNilString(selectUser.Name)
-	if err != nil {
-		logger.Error(err)
+		logger.Errorf("user controller call userService error:%v", err)
 		Error(ctx, httpcode.CODE_500)
 		return
 	}
 
 	// 存在重复用户名
-	if !isNil {
+	if isNil := utils.IsNilString(selectUser.Name); !isNil {
+		logger.Info("user controller createUser userName exist")
 		Error(ctx, httpcode.CODE_406)
 		return
 	}
 
 	userDTO := userBD(&user)
-	err = userService.CreateUser(context.TODO(), []interface{}{userDTO}, userDTO)
-	if err != nil {
-		logger.Errorf("user controller createUser error", err)
+	if err := userService.CreateUser(context.TODO(), []interface{}{userDTO}, userDTO); err != nil {
+		logger.Errorf("user controller call userService createUser error", err)
 		Error(ctx, httpcode.CODE_406)
 		return
 	}
 
+	logger.Info(" controller createUser success")
 	Success(ctx, "注册成功", gin.H{"info": userDTO})
-	logger.Infof("traceId:%v controller createUser success")
 }
 
 // 通过ID获取用户
@@ -76,9 +69,7 @@ func GetUserById(ctx *gin.Context) {
 func Login(ctx *gin.Context) {
 	logger.Info("userController login")
 	user := &BO.User{}
-	var err error
-	err = ctx.ShouldBind(user)
-	if err != nil {
+	if err := ctx.Bind(user); err != nil {
 		logger.Errorf("param bind error: #v", err)
 		Error(ctx, httpcode.CODE_405)
 		return
@@ -86,25 +77,26 @@ func Login(ctx *gin.Context) {
 
 	userService := config.GetConsumerService("UserService").(*service.UserService)
 	selectUser := &DTO.User{}
-	err = userService.GetUserByName(context.TODO(), user.Name, selectUser)
-	if err != nil {
-		logger.Errorf("user controller GetUserByName error", err)
+	if err := userService.GetUserByName(context.TODO(), user.Name, selectUser); err != nil {
+		logger.Errorf("user controller rpc call userService error", err)
 		Error(ctx, httpcode.CODE_500)
 		return
 	}
 
-	isNil, err := utils.IsNilString(selectUser.Name)
-	if err != nil {
-		logger.Error(err)
-		Error(ctx, httpcode.CODE_500)
-		return
-	}
-
-	// 用户不存在
-	if isNil {
+	if isNil := utils.IsNilString(selectUser.Name); isNil {
+		logger.Infof("user controller login user:%v is not exist", selectUser.Name)
 		Error(ctx, httpcode.CODE_407)
 		return
 	}
+
+	if selectUser.PassWord != user.PassWord {
+		logger.Infof("user controller log passWord not equals :source:%v,target:%v", user.PassWord, selectUser.PassWord)
+		Error(ctx, httpcode.CODE_408)
+		return
+	}
+
+	logger.Infof("user controller login success rsp model:%v", *selectUser)
+	Success(ctx, "登录成功", gin.H{"info": selectUser})
 }
 
 // DTO <-> BO

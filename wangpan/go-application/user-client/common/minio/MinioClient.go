@@ -82,13 +82,14 @@ func (c *Client) ExistsBucket(bucketName string) (bool, error) {
 func (c *Client) UploadFile(bucketName, objectName, suffix string, file io.Reader, size int64) error {
 	check(c)
 	options := c.GetUploadOptions(suffix)
-	length, err := c.minioClient.PutObject(bucketName, objectName, file, size, minio.PutObjectOptions{ContentType: options})
+	length, err := c.minioClient.PutObject(bucketName, objectName, file, size, minio.PutObjectOptions{ContentType: options, NumThreads: 100})
 	if err != nil {
 		logger.Error("minio client put object error:", err)
 		return err
 	}
 
 	logger.Info("minio client put byte size:", length)
+	log.Infof("put fileInfo bucketName:%v, objectName:%v, suffix:%v,options:%v", bucketName, objectName, suffix, options)
 	return nil
 }
 
@@ -102,7 +103,7 @@ func check(c *Client) {
 // 获取文件上传类型
 func (c *Client) GetUploadOptions(suffix string) string {
 	typeMap := make(map[string]string)
-	// 特殊文本类型
+	/*// 特殊文本类型
 	typeMap["html"] = "text/html"
 	typeMap["xml"] = "text/xml"
 	typeMap["json"] = "application/json"
@@ -112,7 +113,7 @@ func (c *Client) GetUploadOptions(suffix string) string {
 	typeMap["jpeg"] = "image/jpeg"
 	typeMap["png"] = "image/png"
 	typeMap["jpg"] = "image/jpg"
-
+	*/
 	// 默认类型文件流形式
 	typeMap["default"] = "application/octet-stream"
 

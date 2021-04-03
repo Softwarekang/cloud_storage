@@ -3,8 +3,8 @@ package BO
 // gin client绑定对象
 type User struct {
 	Id          int64  `json:"id"`
-	Name        string `json:"name"  binding:"required"`
-	PassWord    string `json:"passWord"  binding:"required"`
+	Name        string `form:"userName" json:"userName"  binding:"required"`
+	PassWord    string `form:"passWord" json:"passWord"  binding:"required"`
 	PhoneNumber string `json:"phoneNumber" `
 	Email       string `json:"email"`
 	CreateTime  int64  `json:"createTime"`

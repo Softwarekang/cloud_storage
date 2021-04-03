@@ -66,6 +66,8 @@ func registerProviderService() {
 	config.SetProviderService(serverCheckService)
 	fileService := new(service.FileService)
 	config.SetProviderService(fileService)
+	memoryService := new(service.MemoryService)
+	config.SetProviderService(memoryService)
 }
 
 // 序列化注册

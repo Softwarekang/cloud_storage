@@ -6,5 +6,5 @@ func MbToByte(mb int64) int64 {
 		return 0
 	}
 	
-	return mb * 1024 * 1024 * 1024
+	return mb * 1024 * 1024
 }
