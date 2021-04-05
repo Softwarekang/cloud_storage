@@ -5,6 +5,8 @@ import (
 	"errors"
 	"github.com/apache/dubbo-go/config"
 	"github.com/gin-gonic/gin"
+	minioClient "github.com/minio/minio-go/v6"
+	"io"
 	"mime/multipart"
 	"strconv"
 	"user-client/app/com/wpbs/BO"
@@ -157,4 +159,58 @@ func GetFileList(ctx *gin.Context) {
 	}
 
 	Success(ctx, "获取成功", gin.H{"info": fileList})
+}
+
+// 文件播放
+func GetVideo(ctx *gin.Context) {
+	logger.Info("controller getVideo ")
+	fileName := ctx.Param("fileName")
+	fileReader, err := getFileReader(fileName)
+	if err != nil {
+		Error(ctx, httpcode.CODE_500)
+		return
+	}
+
+	chunk, err := readBufFromReader(fileReader)
+	if err != nil {
+		logger.Errorf("read buf from reader error:%v", err)
+	}
+
+	ctx.Writer.Header().Add("Content-Type", "video/mp4")
+	ctx.Writer.Write(chunk)
+	logger.Info("controller getVideo success")
+	Success(ctx, "获取视频资源成功", gin.H{})
+}
+
+// 获取文件流 
+func getFileReader(fileName string) (*minioClient.Object, error) {
+	minioClient := new(minio.Client)
+	file, err := minioClient.GetFile(common.BucketName, fileName)
+	if err != nil {
+		return nil, err
+	}
+
+	return file, nil
+}
+
+// get buf
+func readBufFromReader(reader *minioClient.Object) ([]byte, error) {
+	var chunk []byte
+	buf := make([]byte, 1024)
+
+	for {
+		//从file读取到buf中
+		n, err := reader.Read(buf)
+		if err != nil && err != io.EOF {
+			return nil, err
+		}
+		//说明读取结束
+		if n == 0 {
+			break
+		}
+		//读取到最终的缓冲区中
+		chunk = append(chunk, buf[:n]...)
+	}
+
+	return chunk, nil
 }

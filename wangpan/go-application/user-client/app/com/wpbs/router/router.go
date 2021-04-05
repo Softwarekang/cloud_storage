@@ -32,13 +32,12 @@ func LoadRouters(router *gin.Engine) {
 	/*登录验证逻辑*/
 	// get user
 	router.GET("/user", controller.GetUserById)
-	log.Info("router load success")
-
 	// 文件操作
 	router.POST("/file", controller.FileUpload)
 	router.POST("/getFile", controller.GetFileList)
 	router.DELETE("/file", controller.DeleteFiles)
-
 	// 内存操作
 	router.GET("/memory", controller.GetMemory)
+	// 视频
+	router.GET("/video/:fileName", controller.GetVideo)
 }

@@ -76,7 +76,18 @@ func (c *Client) ExistsBucket(bucketName string) (bool, error) {
 	return bucketExists, err
 }
 
-// 构建viewUrl
+// 获取文件
+func (c *Client) GetFile(bucketName, objectName string) (*minio.Object, error) {
+	check(c)
+	object, err := c.minioClient.GetObject(bucketName, objectName, minio.GetObjectOptions{})
+	if err != nil {
+		logger.Errorf("minio client getFile error:%v", err)
+		return nil, err
+	}
+
+	log.Infof("get fileInfo bucketName:%v, objectName:%v, suffix:%v,options:%v", bucketName, objectName)
+	return object, nil
+}
 
 // 创建文件
 func (c *Client) UploadFile(bucketName, objectName, suffix string, file io.Reader, size int64) error {
