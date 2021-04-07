@@ -27,7 +27,7 @@ type UserService struct {
 func (u *UserService) GetUser(ctx context.Context, req []interface{}) (*DTO.User, error) {
 	log.Info("GetUser req:", req)
 	rsp := DTO.User{1, "Alex Stocks", "rz@ak10.16", "13759972100", "jingyechenfu@aliyun.com",
-		time.Now().Unix(), time.Now().Unix()}
+		constant.DEFAULT_USER_IMAGE_URL, time.Now().Unix(), time.Now().Unix()}
 	log.Info("rsp:", rsp)
 	return &rsp, nil
 }
@@ -39,6 +39,7 @@ func (u *UserService) CreateUser(ctx context.Context, req []interface{}) (*DTO.U
 	session, err := store.DBClient.BeginTx()
 	defer store.DBClient.EndTx(session, &err)
 
+	user.HeadImageUrl = constant.DEFAULT_USER_IMAGE_URL
 	userId, err := store.DBClient.User(session).CreateUser(user)
 	if err != nil {
 		return nil, err

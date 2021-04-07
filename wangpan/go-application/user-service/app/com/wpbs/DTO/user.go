@@ -18,13 +18,14 @@
 package DTO
 
 type User struct {
-	Id          int64
-	Name        string
-	PassWord    string
-	PhoneNumber string
-	Email       string
-	CreateTime  int64
-	UpdateTime  int64
+	Id           int64
+	Name         string
+	PassWord     string
+	PhoneNumber  string
+	Email        string
+	HeadImageUrl string
+	CreateTime   int64
+	UpdateTime   int64
 }
 
 // 同步JAVA对象

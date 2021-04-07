@@ -77,24 +77,26 @@ func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
 // po <-> vo
 func changeUserPV(user *PO.User) *DTO.User {
 	return &DTO.User{
-		Id:          user.Id,
-		Name:        user.Name,
-		PassWord:    user.PassWord,
-		PhoneNumber: user.PhoneNumber,
-		Email:       user.Email,
-		CreateTime:  user.CreateTime,
-		UpdateTime:  user.UpdateTime,
+		Id:           user.Id,
+		Name:         user.Name,
+		PassWord:     user.PassWord,
+		PhoneNumber:  user.PhoneNumber,
+		Email:        user.Email,
+		HeadImageUrl: user.HeadImageUrl,
+		CreateTime:   user.CreateTime,
+		UpdateTime:   user.UpdateTime,
 	}
 }
 
 func changeUserVP(user *DTO.User) *PO.User {
 	return &PO.User{
-		Id:          user.Id,
-		Name:        user.Name,
-		PassWord:    user.PassWord,
-		PhoneNumber: user.PhoneNumber,
-		Email:       user.Email,
-		CreateTime:  user.CreateTime,
-		UpdateTime:  user.UpdateTime,
+		Id:           user.Id,
+		Name:         user.Name,
+		PassWord:     user.PassWord,
+		PhoneNumber:  user.PhoneNumber,
+		Email:        user.Email,
+		HeadImageUrl: user.HeadImageUrl,
+		CreateTime:   user.CreateTime,
+		UpdateTime:   user.UpdateTime,
 	}
 }
