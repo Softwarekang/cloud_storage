@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/apache/dubbo-go/config"
 	"github.com/gin-gonic/gin"
+	"mime/multipart"
 	"user-client/app/com/wpbs/BO"
 	"user-client/app/com/wpbs/DTO"
 	"user-client/app/com/wpbs/service"
@@ -97,6 +98,36 @@ func Login(ctx *gin.Context) {
 
 	logger.Infof("user controller login success rsp model:%v", *selectUser)
 	Success(ctx, "登录成功", gin.H{"info": selectUser})
+}
+
+// 用户头像上传
+func UserImage(ctx *gin.Context) {
+	fileHeader, err := checkUserImageUpload(ctx)
+	if err != nil {
+		logger.Error("controller UserImage file param error")
+		Error(ctx, httpcode.CODE_405)
+		return
+	}
+
+	fileViewUrl, err := UploadFileMinio(fileHeader)
+	if err != nil {
+		logger.Errorf("controller UserImage upload file error:%v", err)
+		Error(ctx, httpcode.CODE_500)
+		return
+	}
+
+	logger.Info("controller UserImage success rsp:%v", fileViewUrl)
+	Success(ctx, "上传成功", gin.H{"info": fileViewUrl})
+}
+
+func checkUserImageUpload(ctx *gin.Context) (*multipart.FileHeader, error) {
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		logger.Errorf("file param err:", err)
+		return nil, err
+	}
+
+	return file, nil
 }
 
 // DTO <-> BO

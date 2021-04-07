@@ -11,6 +11,7 @@ type UserService struct {
 	CreateUser    func(ctx context.Context, req []interface{}, rsp *DTO.User) error
 	GetUserById   func(ctx context.Context, req []interface{}, rsp *DTO.User) error
 	GetUserByName func(ctx context.Context, name string, rsp *DTO.User) error
+	UpdateUser    func(ctx context.Context, req interface{}) error
 }
 
 func (u *UserService) Reference() string {

@@ -27,6 +27,8 @@ func LoadRouters(router *gin.Engine) {
 	router.GET("/test", controller.CheckServer)
 	// create user
 	router.POST("/user", controller.CreateUser)
+	// upload image
+	router.POST("/userImage", controller.UserImage)
 	// 登录
 	router.POST("/login", controller.Login)
 	/*登录验证逻辑*/
