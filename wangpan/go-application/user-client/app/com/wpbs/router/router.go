@@ -42,4 +42,5 @@ func LoadRouters(router *gin.Engine) {
 	router.GET("/memory", controller.GetMemory)
 	// 视频
 	router.GET("/video/:fileName", controller.GetVideo)
+	router.POST("/userInfo", controller.UpdateUser)
 }

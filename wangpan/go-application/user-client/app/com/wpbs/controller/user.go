@@ -79,7 +79,7 @@ func Login(ctx *gin.Context) {
 	userService := config.GetConsumerService("UserService").(*service.UserService)
 	selectUser := &DTO.User{}
 	if err := userService.GetUserByName(context.TODO(), user.Name, selectUser); err != nil {
-		logger.Errorf("user controller rpc call userService error", err)
+		logger.Errorf("user controller Login rpc call userService error", err)
 		Error(ctx, httpcode.CODE_500)
 		return
 	}
@@ -130,6 +130,27 @@ func checkUserImageUpload(ctx *gin.Context) (*multipart.FileHeader, error) {
 	return file, nil
 }
 
+func UpdateUser(ctx *gin.Context) {
+	logger.Infof("controller UpdateUser")
+	user := &BO.User{}
+	if err := ctx.BindJSON(user); err != nil {
+		logger.Errorf("param bind error:%v", err)
+		Error(ctx, httpcode.CODE_405)
+		return
+	}
+
+	userService := config.GetConsumerService("UserService").(*service.UserService)
+	userDto :=userBD(user)
+	if err := userService.UpdateUser(context.TODO(), userDto); err != nil {
+		logger.Errorf("user controller UpdateUser call userService error:%v", err)
+		Error(ctx, httpcode.CODE_500)
+		return
+	}
+
+	logger.Infof("user controller UpdateUser success")
+	Success(ctx, "更新成功", nil)
+}
+
 // DTO <-> BO
 func userBD(user *BO.User) *DTO.User {
 	return &DTO.User{
@@ -138,6 +159,7 @@ func userBD(user *BO.User) *DTO.User {
 		PassWord:    user.PassWord,
 		PhoneNumber: user.PhoneNumber,
 		Email:       user.Email,
+		HeadImageUrl: user.HeadImageUrl,
 		CreateTime:  user.CreateTime,
 		UpdateTime:  user.UpdateTime,
 	}
@@ -150,6 +172,7 @@ func userDB(user *DTO.User) *BO.User {
 		PassWord:    user.PassWord,
 		PhoneNumber: user.PhoneNumber,
 		Email:       user.Email,
+		HeadImageUrl: user.HeadImageUrl,
 		CreateTime:  user.CreateTime,
 		UpdateTime:  user.UpdateTime,
 	}
