@@ -51,3 +51,12 @@ func (x *XormClient) Where(db interface{}, query interface{}, args ...interface{
 	session := db.(*xorm.Session)
 	return session.Where(query, args...)
 }
+
+func (x *XormClient) ID(db interface{}, id interface{}) *xorm.Session {
+	engine, ok := db.(*xorm.Engine)
+	if ok {
+		return engine.ID(id)
+	}
+	session := db.(*xorm.Session)
+	return session.ID(id)
+}

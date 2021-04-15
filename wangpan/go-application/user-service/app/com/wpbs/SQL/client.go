@@ -8,4 +8,5 @@ type SQLClient interface {
 	Insert(db interface{}, beans ...interface{}) (int64, error)
 	Get(db interface{}, bean interface{}) (bool, error)
 	Where(db interface{}, query interface{}, args ...interface{}) *xorm.Session
+	ID(db interface{}, id interface{}) *xorm.Session
 }

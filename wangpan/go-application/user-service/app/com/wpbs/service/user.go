@@ -87,6 +87,18 @@ func (u *UserService) GetUserByName(ctx context.Context, req interface{}) (*DTO.
 	return user, nil
 }
 
+func (u *UserService) UpdateUser(ctx context.Context, req interface{}) error {
+	log.Infof("UserService UpdateUser req:%v", req)
+	user := req.(*DTO.User)
+	engine := store.DBClient.Begin()
+	user.PassWord = ""
+	if err := store.DBClient.User(engine).UpdateUser(user); err != nil {
+		return err
+	}
+	log.Infof("UserService UpdateUser success")
+	return nil
+}
+
 // 继承RPCSerive 接
 // 口  实现Reference方法:
 func (u *UserService) Reference() string {

@@ -74,6 +74,20 @@ func (u *UserDao) GetUserByName(name string) (*DTO.User, error) {
 	return changeUserPV(user), nil
 }
 
+// 更新用户信息
+func (u *UserDao) UpdateUser(user *DTO.User) error {
+	log.Info("userDao UpdateUser param:%v", user)
+	userModel := changeUserVP(user)
+	client := extension.GetSQLClient(u.SQLClient)
+	if _, err := client.ID(u.DB, user.Id).Update(userModel); err != nil {
+		log.Errorf("UserDao UpdateUser error:%v, model:%v", err, userModel)
+		return err
+	}
+
+	log.Infof("UserDao UpdateUser success")
+	return nil
+}
+
 // po <-> vo
 func changeUserPV(user *PO.User) *DTO.User {
 	return &DTO.User{
